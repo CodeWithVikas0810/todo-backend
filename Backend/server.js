@@ -13,7 +13,7 @@ dotenv.config()
 const app = express();
 
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,   
+    origin: "https://todos-fwjj.onrender.com",   
     credentials: true
 }))
 
