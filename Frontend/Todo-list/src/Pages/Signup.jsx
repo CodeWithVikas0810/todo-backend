@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; 
 
 function Signup() {
   const [name, setName] = useState("");
@@ -8,16 +10,18 @@ function Signup() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  const valid = name.trim() && email.trim() && password.trim();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/api/auth/signup", { name, email, password })
+      .post("https://todo-backend-1-8ra9.onrender.com/api/auth/signup", { name, email, password })
       .then((res) => {
         console.log(res.data);
         navigate("/login");
       })
       .catch((err) => {
-        alert(err.response.data.message || "User already exists");
+        toast.error(err.response.data.message || "User already exists");
         console.log(err);
       });
   };
@@ -85,8 +89,14 @@ function Signup() {
           </div>
 
           <button
+            disabled={!valid}
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 font-medium transition duration-200"
+            className={`w-full py-2 px-4 rounded-lg font-medium transition duration-200
+            ${
+              valid
+                ? "bg-indigo-600 hover:bg-indigo-700 cursor-pointer focus:ring-4 focus:ring-indigo-300 text-white"
+                : "bg-gray-400 cursor-not-allowed text-gray-200"
+            }`}
           >
             Sign Up
           </button>
